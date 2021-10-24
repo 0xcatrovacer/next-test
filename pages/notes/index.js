@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../styles/Notes.module.css";
+import Link from "next/link";
 
 export const getStaticProps = async () => {
     const res = await fetch("https://jsonplaceholder.typicode.com/users");
@@ -17,11 +18,11 @@ function Notes({ users }) {
         <div>
             <h1>All Notes</h1>
             {users.map((user) => (
-                <div key={user.id}>
+                <Link key={user.id} href={`/notes/${user.id}`}>
                     <a className={styles.single}>
                         <h3>{user.name}</h3>
                     </a>
-                </div>
+                </Link>
             ))}
         </div>
     );
