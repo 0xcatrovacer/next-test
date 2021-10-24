@@ -2,7 +2,7 @@ import React from "react";
 
 export const getStaticPaths = async () => {
     const res = await fetch("https://jsonplaceholder.typicode.com/users");
-    const data = res.json();
+    const data = await res.json();
 
     const paths = data.map((user) => {
         return {
@@ -11,14 +11,28 @@ export const getStaticPaths = async () => {
     });
 
     return {
-        paths: [],
+        paths: paths,
+        fallback: false,
     };
 };
 
-const Details = () => {
+export const getStaticProps = async (context) => {
+    const id = context.params.id;
+    const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+    const data = await res.json();
+
+    return {
+        props: { user: data },
+    };
+};
+
+const Details = ({ user }) => {
     return (
         <div>
             <h1>Details Page</h1>
+            <p>{user.name}</p>
+            <p>{user.email}</p>
+            <p>{user.webite}</p>
         </div>
     );
 };
